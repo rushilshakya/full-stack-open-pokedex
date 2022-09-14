@@ -50,8 +50,6 @@ jobs:
         with:
           fetch-depth: '0'
       - name: Bump version and push tag
-        env:
-          COMMIT_MESSAGES: ${{ join(github.event.commits.*.message) }}
         uses: anothrNick/github-tag-action@1.36.0
         if: ${{ github.event_name == 'push' }}
         env:
