@@ -53,7 +53,7 @@ jobs:
         uses: anothrNick/github-tag-action@1.36.0
         env:
           COMMIT_MESSAGES: ${{ join(github.event.commits.*.message) }}
-        if: ${{ github.event_name == 'push' && !(contains($COMMIT_MESSAGES, '#skip')) }}
+        if: ${{ github.event_name == 'push' }}
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           DEFAULT_BUMP: patch
@@ -73,4 +73,8 @@ jobs:
       - name: commit messages
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+        run: echo "$COMMIT_MESSAGES"
+      - name: joined commit messages
+        env:
+          COMMIT_MESSAGES: ${{ toJson(join(github.event.commits.*.message)) }}
         run: echo "$COMMIT_MESSAGES"
