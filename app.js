@@ -11,7 +11,7 @@ app.get('/health', (req, res) => {
 })
 
 app.get('/version', (req, res) => {
-  res.send('tag to 4') // change this string to ensure a new version deployed
+  res.send('complete 11.17') // change this string to ensure a new version deployed
 })
 
 app.listen(PORT, () => {
