@@ -31,7 +31,6 @@ jobs:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           text: Build failed!
           details: Build Failed!
-        
       - name: run test
         run: npm run test
       - name: e2e tests
@@ -41,6 +40,7 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
       - name: heroku deploy
+        id: deploy
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         if: ${{ github.event_name == 'push' }}
         with:
@@ -51,6 +51,14 @@ jobs:
           checkstring: "ok"
           delay: 5
           rollbackonhealthcheckfailed: true
+      - name: notify deploy failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ failure() && steps.deploy.conclusion == 'failure' }}
+        with:
+          severity: error
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          text: Deploy failed!
+          details: Deploy Failed!
 
   tag_release:
     needs: [simple_deployment_pipeline]
